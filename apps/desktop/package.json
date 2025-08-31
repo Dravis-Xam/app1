@@ -1,0 +1,19 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "desktop versiob",
+  "main": "main.js",
+  "scripts": {
+    "test": "run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "key",
+    "key-itself"
+  ],
+  "author": "Dravis",
+  "license": "ISC"
+}
