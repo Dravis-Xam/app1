@@ -27,6 +27,16 @@ const io = new Server(server, {
 import('./services/api/auth/auth.route').then(({ default: authRouter }) => {
   app.use("/api/auth", authRouter);
 });
+import('./services/api/user/user').then(({ default: userRouter }) => {
+  app.use("/api", userRouter);
+});
+import('./services/api/stream/stream').then(({ default: streamRouter }) => {
+  app.use("/api", streamRouter);
+});
+import('./services/api/schedule/schedule').then(({ default: scheduleRouter }) => {
+  app.use("/api", scheduleRouter);
+}); 
+
 
 io.on("connection", (socket) => handleSocketConnection(socket, io));
 
