@@ -31,7 +31,11 @@ const routes: AppRoute[] = [
   { path: "/login", element: <LoginScreen /> },
   {
     path: "/dashboard",
-    element: <DashboardScreen />,
+    element: (
+      <ProtectedRoute>
+        <DashboardScreen />
+      </ProtectedRoute>
+    ),
     children: [
       { path: "overview", element: <DashboardOverviewScreen /> },
       { path: "settings", element: <DashboardSettingsScreen /> },
@@ -55,30 +59,17 @@ export default function AppRouter() {
       >
         <Suspense fallback={<LoadingCircle />}>
           <Routes>
-            {routes.map(({ path, element, children }, idx) => {
-              if (children && children.length > 0) {
-                return (
-                  <React.Fragment key={idx}>
-                    {path === "/dashboard" ? (
-                      <ProtectedRoute>
-                        <Route path={path} element={element}>
-                          {children.map(({ path: childPath, element: childEl }, cIdx) => (
-                            <Route key={cIdx} path={childPath} element={childEl} />
-                          ))}
-                        </Route>
-                      </ProtectedRoute>
-                    ) : (
-                      <Route path={path} element={element}>
-                        {children.map(({ path: childPath, element: childEl }, cIdx) => (
-                          <Route key={cIdx} path={childPath} element={childEl} />
-                        ))}
-                      </Route>
-                    )}
-                  </React.Fragment>
-                );
-              }
-              return <Route key={idx} path={path} element={element} />;
-            })}
+            {routes.map(({ path, element, children }, idx) => (
+              children && children.length > 0 ? (
+                <Route key={idx} path={path} element={element}>
+                  {children.map(({ path: childPath, element: childEl }, cIdx) => (
+                    <Route key={cIdx} path={childPath} element={childEl} />
+                  ))}
+                </Route>
+              ) : (
+                <Route key={idx} path={path} element={element} />
+              )
+            ))}
           </Routes>
         </Suspense>
       </ErrorBoundary>
