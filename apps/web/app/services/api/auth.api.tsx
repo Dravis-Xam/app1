@@ -22,7 +22,7 @@ function logout(auth: Auth): fetcher {
     });
 }
 
-function signup(): fetcher {
+function signup({ username, password }: { username: string; password: string }): fetcher {
     return new fetcher({
         url: '/api/auth/signup',
         options: {

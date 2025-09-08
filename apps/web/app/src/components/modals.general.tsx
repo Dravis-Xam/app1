@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Modal, ModalProps } from "react-bootstrap";
 import { ButtonClose } from "./button.general";
+import LoadingCircle from "./loadingcircle.general";
 
 interface GeneralModalProps extends ModalProps {
   title?: string;
@@ -96,12 +97,10 @@ export const LoadingModal: React.FC<{ show: boolean; message?: string }> = ({
     keyboard={false}
     onHide={() => {}}
   >
-    <div className="loading-spinner text-center">
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
+    <>
+      <LoadingCircle />
       <p>{message || "Please wait while we process your request."}</p>
-    </div>
+    </>
   </GeneralModal>
 );
 

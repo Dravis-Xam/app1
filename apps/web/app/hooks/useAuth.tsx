@@ -12,6 +12,7 @@ type AuthContextType = {
     user: User | null;
     login: (username: string, password: string, rememberMe: boolean) => Promise<void>;
     logout: () => void;
+    error:  any | null;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,7 +48,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             logout: () => {
                 setUser(null);
                 setError(null);
-            }
+            }, 
+            error
         }),
         [user]
     );

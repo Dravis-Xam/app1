@@ -4,7 +4,7 @@ import useAuth from "../hooks/useAuth";
 import State from "../constants/types/state.type";
 import { signup } from "./api/auth.api";
 
-export default function SignupRedirect() {
+export default function SignupRedirect({username, password}) {
     const { user } = useAuth();
     const router = useRouter();
     const [state, setState] = useState<State>({ isLoading: true, error: null });
@@ -15,7 +15,8 @@ export default function SignupRedirect() {
             const performSignup = async () => {
                 setState({ isLoading: true, error: null });
                 try {
-                    await signup().fetchData();
+                    // Replace with actual username and password values
+                    await signup({ username, password }).fetchData();
                     router.push('/login');
                 } catch (err: any) {
                     setState({

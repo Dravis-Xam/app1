@@ -1,5 +1,6 @@
 import * as React from "react";
 
+
 interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   classes?: string;
   children?: React.ReactNode;
@@ -25,9 +26,10 @@ const Button: React.FC<BaseButtonProps> = ({ children, classes = "", ...props })
 interface ButtonLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   classes?: string;
   children?: React.ReactNode;
+  link?: string
 }
-const ButtonLink: React.FC<ButtonLinkProps> = ({ children, classes = "", ...props }) => (
-  <a className={`btn ${classes}`} {...props}>
+const ButtonLink: React.FC<ButtonLinkProps> = ({ children, link, classes = "", ...props }) => (
+  <a href={link} className={`btn ${classes}`} {...props}>
     {children}
   </a>
 );
