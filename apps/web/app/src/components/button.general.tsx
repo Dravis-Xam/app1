@@ -1,57 +1,105 @@
 import * as React from "react";
 
-interface ButtonProps {
-    children?: React.ReactNode;
-    onClick?: () => void;
-    classes?: string;
+interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  classes?: string;
+  children?: React.ReactNode;
 }
 
-class Button extends React.Component<ButtonProps, {}> {
-    render() {
-        return <button className={`btn ${this.props.classes}`} onClick={this.props.onClick}>{this.props.children}</button>;
-    }
-}
+const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
+  ({ children, classes = "", ...props }, ref) => (
+    <button ref={ref} className={`btn ${classes}`} {...props}>
+      {children}
+    </button>
+  )
+);
+BaseButton.displayName = "BaseButton";
 
-class ButtonLink extends React.Component<ButtonProps & { href: string }, {}> {
-    render() {
-        return <a className={`btn ${this.props.classes}`} href={this.props.href}>{this.props.children}</a>;
-    }
-}
+// 🔹 Standard Button
+const Button: React.FC<BaseButtonProps> = ({ children, classes = "", ...props }) => (
+  <BaseButton classes={classes} {...props}>
+    {children}
+  </BaseButton>
+);
 
-class ButtonIcon extends React.Component<ButtonProps & { icon: React.ReactNode }, {}> {
-    render() {
-        return <button className={`btn-icon ${this.props.classes}`} onClick={this.props.onClick}>{this.props.icon}</button>;
-    }
+// 🔹 Link Button
+interface ButtonLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  classes?: string;
+  children?: React.ReactNode;
 }
+const ButtonLink: React.FC<ButtonLinkProps> = ({ children, classes = "", ...props }) => (
+  <a className={`btn ${classes}`} {...props}>
+    {children}
+  </a>
+);
 
-class ButtonGroup extends React.Component<{ children: React.ReactNode, classes?: string }, {}> {
-    render() {
-        return <div className={`btn-group ${this.props.classes}`}>{this.props.children}</div>;
-    }
+// 🔹 Icon Button
+interface ButtonIconProps extends Omit<BaseButtonProps, "children"> {
+  icon: React.ReactNode;
 }
+const ButtonIcon: React.FC<ButtonIconProps> = ({ icon, classes = "", ...props }) => (
+  <BaseButton classes={`btn-icon ${classes}`} {...props}>
+    {icon}
+  </BaseButton>
+);
 
-class ButtonToggle extends React.Component<{ isActive: boolean, onClick: () => void, children?: React.ReactNode, classes?: string }, {}> {
-    render() {
-        return <button className={`btn-toggle ${this.props.isActive ? 'active' : ''} ${this.props.classes}`} onClick={this.props.onClick}>{this.props.children}</button>;
-    }
+// 🔹 Toggle Button
+interface ButtonToggleProps extends BaseButtonProps {
+  isActive: boolean;
 }
+const ButtonToggle: React.FC<ButtonToggleProps> = ({ isActive, children, classes = "", ...props }) => (
+  <BaseButton
+    classes={`btn-toggle ${isActive ? "active" : ""} ${classes}`}
+    {...props}
+  >
+    {children}
+  </BaseButton>
+);
 
-class ButtonSubmit extends React.Component<ButtonProps, {}> {
-    render() {
-        return <button type="submit" className={`btn-submit ${this.props.classes}`} onClick={this.props.onClick}>{this.props.children}</button>;
-    }
-}
+// 🔹 Submit Button
+const ButtonSubmit: React.FC<BaseButtonProps> = ({ children, classes = "", ...props }) => (
+  <BaseButton type="submit" classes={`btn-submit ${classes}`} {...props}>
+    {children}
+  </BaseButton>
+);
 
-class ButtonReset extends React.Component<ButtonProps, {}> {
-    render() {
-        return <button type="reset" className={`btn-reset ${this.props.classes}`} onClick={this.props.onClick}>{this.props.children}</button>;
-    }
-}
+// 🔹 Reset Button
+const ButtonReset: React.FC<BaseButtonProps> = ({ children, classes = "", ...props }) => (
+  <BaseButton type="reset" classes={`btn-reset ${classes}`} {...props}>
+    {children}
+  </BaseButton>
+);
 
-class ButtonClose extends React.Component<ButtonProps, {}> {
-    render() {
-        return <button className={`btn-close ${this.props.classes}`} onClick={this.props.onClick}>{this.props.children || '×'}</button>;
-    }
-}
+// 🔹 Close Button
+const ButtonClose: React.FC<BaseButtonProps> = ({ children, classes = "", ...props }) => (
+  <BaseButton classes={`btn-close ${classes}`} {...props}>
+    {children || "×"}
+  </BaseButton>
+);
 
-export {Button, ButtonLink, ButtonIcon, ButtonGroup, ButtonToggle, ButtonSubmit, ButtonReset, ButtonClose};
+// 🔹 Button Group
+type ButtonGroupProps = {
+  classes?: string;
+  children?: React.ReactNode;
+  buttons?: { label: string; link: string }[];
+};
+const ButtonGroup: React.FC<ButtonGroupProps> = ({ classes = "", children, buttons }) => (
+  <div className={`btn-group ${classes}`}>
+    {buttons?.map((button, idx) => (
+      <ButtonLink key={idx} href={button.link}>
+        {button.label}
+      </ButtonLink>
+    ))}
+    {children}
+  </div>
+);
+
+export {
+  Button,
+  ButtonLink,
+  ButtonIcon,
+  ButtonGroup,
+  ButtonToggle,
+  ButtonSubmit,
+  ButtonReset,
+  ButtonClose,
+};
