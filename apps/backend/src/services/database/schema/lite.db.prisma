@@ -26,7 +26,9 @@ model Stream {
   userId      Int
   title       String
   description String?
-  url         String   @unique
+  thumbnailUrl String   @unique
+  streamUrl   String   @unique
+  tag         String?
   isLive      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
